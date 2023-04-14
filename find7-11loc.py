@@ -38,30 +38,34 @@ G.add_edges_from([
     ('Kabin Buri','7-11 Kabin', {'distance': 21.4}) 
     ])
 
-
+#position
 pos = {'KMUTNB Prachinburi':(1.8,10.4),'Kabin Buri':(9.2,0.5),'Nadee':(11.2,8),'Ban Sang':(1.6,1.4),'Prachantakham':(7.5,11.5),'Sri Maha Phot':(8.9,5),'Sri Mahosot':(4.6,2.5)
        ,'7-11 Noen Hom':(2.6,8.7),'7-11 Naresuan':(3.2,7.9),'7-11 Phrom Yothi':(4.6,6.9),'7-11 Mai Khet':(2.5,6.6),'7-11 Mueng':(2.8,4.7),'7-11 Nha Mueng':(5.3,5.9),'7-11 Ban Sang':(2,3.3)
        ,'7-11 Sri Mahosot':(5.2,3.6),'7-11 Sri Maha Phot':(7.2,7),'7-11 Khok kwang':(7,3),'7-11 Nikom 304':(10.2,4),'7-11 Kabin':(9.4,2.9),'7-11 Nadee':(8.6,8), '7-11 Prachantakham':(7.4,8.9)}
 
 
 
-
+#serch_loca_nodes
 def search_nodes():
     global shortest_path
-    valid_nodes = ['KMUTNB Prachinburi', 'Kabin Buri', 'Nadee', 'Ban Sang', 'Prachantakham', 'Sri Maha Phot', 'Sri Mahosot',
+    location_nodes = ['KMUTNB Prachinburi', 'Kabin Buri', 'Nadee', 'Ban Sang', 'Prachantakham', 'Sri Maha Phot', 'Sri Mahosot',
                    '7-11 Noen Hom','7-11 Naresuan','7-11 Phrom Yothi','7-11 Mai Khet','7-11 Mueng','7-11 Nha Mueng','7-11 Thetsaban Mueang'
                     ,'7-11 Sri Mahosot','7-11 Sri Maha Phot','7-11 Khok kwang','7-11 Nikom 304','7-11 Kabin','7-11 Nadee']
     source = source_entry.get()
-    while source not in valid_nodes:
-        source = input(f"{source} is not a valid node. Please try again: ")
+    
+    while source not in location_nodes:
+        source = input(f"{source} is not a location node. Please try again: ")
     destination = destination_entry.get()
-    while destination not in valid_nodes:
-        destination = input(f"{destination} is not a valid node. Please try again: ")
+    while destination not in location_nodes:
+        destination = input(f"{destination} is not a location node. Please try again: ")
+ 
+ #calculate       
     shortest_path = nx.shortest_path(G, source=source, target=destination, weight='distance')
     shortest_path_length = nx.shortest_path_length(G, source=source, target=destination, weight='distance')
     shortest_path_length = ("%.2f"%(shortest_path_length))
     path_label.config(text=f"The nearest ways from {source} to {destination}: {shortest_path}\nShortest path length: {shortest_path_length} km.")
-    
+ 
+#color_nodes   
     node_color_map = []
     for node in G.nodes():
         if node == shortest_path[0]:
@@ -73,6 +77,7 @@ def search_nodes():
         else:
             node_color_map.append('purple')
 
+#figsize
     plt.figure(figsize=(12,8))
     nx.draw_networkx(G, pos, with_labels=True, node_color=node_color_map, node_size=1000)
     edge_labels = nx.get_edge_attributes(G, 'distance')
@@ -81,7 +86,7 @@ def search_nodes():
     plt.title("Find 7-11 Shortest Location", size=12)
     plt.show()
 
-
+#all_of_thinter
 root = tk.Tk()
 root.title("Find 7-11 Shortest Location")
 
@@ -116,3 +121,4 @@ path_label = tk.Label(frame, text="")
 path_label.grid(row=3, column=0, columnspan=2)
 
 root.mainloop()
+ 
